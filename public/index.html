@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telegram Dice Bot Control Panel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .container {
+            background-color: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Telegram Dice Bot Control Panel</h1>
+        <div class="form-group">
+            <label for="botToken">Bot Token:</label>
+            <input type="text" id="botToken" placeholder="Enter your bot token">
+        </div>
+        <button onclick="startBot()">Start Bot</button>
+        <button onclick="disconnectBot()">Disconnect Bot</button>
+    </div>
+
+    <script>
+        async function startBot() {
+            const botToken = document.getElementById('botToken').value;
+            try {
+                const response = await fetch('/start_bot', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ bot_token: botToken }),
+                });
+                const data = await response.json();
+                alert(data.message || data.error);
+            } catch (error) {
+                alert('Error starting bot: ' + error.message);
+            }
+        }
+
+        async function disconnectBot() {
+            const botToken = document.getElementById('botToken').value;
+            try {
+                const response = await fetch('/disconnect_bot', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ bot_token: botToken }),
+                });
+                const data = await response.json();
+                alert(data.message || data.error);
+            } catch (error) {
+                alert('Error disconnecting bot: ' + error.message);
+            }
+        }
+    </script>
+</body>
+</html>
